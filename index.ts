@@ -1,6 +1,9 @@
 import express from 'express';
-import routes from './src/routes/index';
+import * as dotenv from 'dotenv';
+dotenv.configDotenv();
+
 import database from './src/config/database';
+import routes from './src/routes/index';
 
 const app = express();
 const port = process.env.PORT || 5000;
