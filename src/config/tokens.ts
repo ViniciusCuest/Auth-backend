@@ -1,28 +1,19 @@
 import jwt from 'jsonwebtoken';
 import crypto, { randomUUID } from 'crypto'
 
-const { privateKey: privateKeyAccess, publicKey: publicKeyAccess } = crypto.generateKeyPairSync('rsa', {
-    modulusLength: 2048,
-});
+const refresh = process.env.JWT_REFRESH || '';
+const access = process.env.JWT_ACCESS || '';
 
-// Gerar o par de chaves assimétricas (RSA) para o refresh token
-const { privateKey: privateKeyRefresh, publicKey: publicKeyRefresh } = crypto.generateKeyPairSync('rsa', {
-    modulusLength: 2048,
-});
+const generateAccessToken = (userData: any): string => {
 
-const generateAccessToken = (userData: any) => {
-
-    const secret_token = process.env.SECRET_JWT;
-    const token = jwt.sign(userData, privateKeyAccess.export({ type: 'pkcs1', format: 'pem' }), {
-        algorithm: 'RS256',
+    const token = jwt.sign(userData, access, {
         expiresIn: 40
     });
     return token;
 }
 
-const generateRefreshToken = (userData: any) => {
-    const refreshTokenSecret = 'seuOutroSegredo'; // Substitua por um segredo seguro em produção
-    const token = jwt.sign(userData, 'MYREFRESHTOKENSECRET', {
+const generateRefreshToken = (userData: any): string => {
+    const token = jwt.sign(userData, refresh, {
         expiresIn: 60 * 2 //2min
     });
     return token;
