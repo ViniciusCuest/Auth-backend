@@ -1,25 +1,29 @@
 import jwt from 'jsonwebtoken';
-import crypto, { randomUUID } from 'crypto'
+import { getUnixTimestamp } from '../utils/unix-timestamp';
+
 
 const refresh = process.env.JWT_REFRESH || '';
 const access = process.env.JWT_ACCESS || '';
 
-const generateAccessToken = (userData: any): string => {
-
-    const token = jwt.sign(userData, access, {
-        expiresIn: 40
-    });
-    return token;
+interface Refresh {
+  sub: string;
+  scopes: string[] | number[],
+  exp?: number;
 }
 
-const generateRefreshToken = (userData: any): string => {
-    const token = jwt.sign(userData, refresh, {
-        expiresIn: 60 * 2 //2min
-    });
-    return token;
-}
+
+
+const generateAccessToken = (data: Refresh): string => {
+  const token = jwt.sign({ ...data, exp: getUnixTimestamp(1) }, access);
+  return token;
+};
+
+const generateRefreshToken = (data: Refresh): string => {
+  const token = jwt.sign({ ...data, exp: getUnixTimestamp(2) }, refresh);
+  return token;
+};
 
 export {
-    generateAccessToken,
-    generateRefreshToken
-}
+  generateAccessToken,
+  generateRefreshToken
+};
