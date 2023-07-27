@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import Users from '../models/users';
 import { randomUUID } from 'crypto';
-import { generateAccessToken } from '../config/tokens';
+import { generateAccessToken, generateRefreshToken } from '../config/tokens';
 
 async function login(req: Request, res: Response) {
 
@@ -27,7 +27,7 @@ async function login(req: Request, res: Response) {
       email: user.email,
       country: user.country,
       phone: user.phone,
-      refresh_token: generateAccessToken({ sub: user.id, scopes: [0], exp: 60 }),
+      refresh_token: generateRefreshToken({ sub: user.id, scopes: [0], exp: 60 }),
       access_token: generateAccessToken({ sub: user.id, scopes: [0], exp: 30 }),
     });
   } catch (error) {

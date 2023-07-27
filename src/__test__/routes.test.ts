@@ -4,6 +4,7 @@ import { describe, it, expect, vi, beforeAll, afterAll, beforeEach, afterEach } 
 import request from 'supertest';
 import Users from '../models/users';
 import { randomUUID } from 'crypto';
+import mongoose from 'mongoose';
 
 vi.mock('../config/tokens');
 
@@ -44,10 +45,9 @@ describe('Login', async () => {
 
   it('should return body malformed error', async () => {
     const response = await request(app).post('/login').send({
-      
+
     });
 
     expect(response.status).toBe(400);
   })
-
 });

@@ -20,6 +20,7 @@ const generateAccessToken = (data: Refresh): string => {
 
 const generateRefreshToken = (data: Refresh): string => {
   const token = jwt.sign({ ...data, exp: getUnixTimestamp(2) }, refresh);
+  console.log('LAST_TOKEN: ', token);
   return token;
 };
 

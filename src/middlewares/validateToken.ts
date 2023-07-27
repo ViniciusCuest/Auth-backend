@@ -17,12 +17,12 @@ export const validateToken = (req: Request, res: Response, next: NextFunction) =
     return next();
   } catch (err: any) {
     switch (err.message) {
-    case 'jwt expired':
-      message = 'Token is expired!';
-      break;
-    default:
-      message = 'Invalid token!';
-      break;
+      case 'jwt expired':
+        message = 'Token is expired!';
+        break;
+      default:
+        message = 'Invalid token!';
+        break;
     }
   }
 
